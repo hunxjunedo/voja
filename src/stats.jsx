@@ -37,19 +37,20 @@ export default function Stats(props) {
 
 
 
-    const genericstatsholder = { width: '90%', height: '90%', padding: 5, background: secondryDARK, borderRadius: 40, display: 'grid', alignItems: 'center', justifyItems: 'center', color: lightclr, gridAutoFlow: 'column', alignItems: 'center', justifyItems: 'center',   padding: '1vw', gap: 10, overflowX: 'scroll' }
-
+    const genericstatsholder = { width: '90%', height: '90%', padding: 5, background: secondryDARK, borderRadius: 40, display: 'grid', alignItems: 'center', justifyItems: 'center', color: lightclr, gridAutoFlow: 'column', alignItems: 'center', justifyItems: 'center',   padding: '1vw', gap: 10, overflow: ismobile ? 'clip scroll' : 'scroll clip' }
+    const progressSIZE = ismobile ? 70 : 120
+    const lengthCONSTANT = ismobile ? 30 : 13
     const divstyles = {
         background: darkclr,
-        gridColumn: '1/4',
-        justifySelf: 'start',
+        gridColumn: ismobile ? '1/2' : '1/4',
+        justifySelf: ismobile ? 'center' : 'start',
         borderRadius: 40,
-        maxHeight: '48vh',
-        width: '98%',
+        scrollSnapAlign: 'start',
+        maxHeight: ismobile ? 'auto' : '48vh',
+        width: `${ismobile ? 90 : 98}%`,
         height: '90%',
         display: 'grid',
-        gridTemplateRows: '100%',
-        gridAutoFlow: 'column',
+        gridAutoFlow: ismobile ? 'row' : 'column',
         justifyItems: 'center',
         alignItems: 'center',
         position: "relative",
@@ -57,16 +58,16 @@ export default function Stats(props) {
         padding: '1vw'
     }
 
-    const genericinnerdiv = { width: '80%', height: '90%', overflowY: "auto", overflowX: 'hidden', paddingRight: '5px', boxShadow: "rgb(255 255 255 / 5%) 2px 1px 20px 10px", padding: 15, borderRadius: 20, color: lightclr, }
+    const genericinnerdiv = { width: ismobile ? '70%' : 100, height: ismobile ? 200 : '90%', overflowY: "auto", overflowX: 'hidden', paddingRight: '5px', boxShadow: "rgb(255 255 255 / 5%) 2px 1px 20px 10px", padding: '0 15px', borderRadius: 20, color: lightclr, }
     return (
         <div style={divstyles}>
 
             <div style={{ ...genericstatsholder }} >
                 <div style={{ maxWidth: '90%', height: '90%', display: 'grid' }}>
-                    <h2 >Overall</h2>
-                    <Progress percent={rounder(overallcompleted)} size='2vw' type="dashboard" />
+                    {ismobile ? <h3>Overall</h3> : <h2>Overall</h2>}
+                    <Progress percent={rounder(overallcompleted)} size={progressSIZE} type="dashboard" />
                 </div>
-                <div style={{...genericinnerdiv, width: 100, maxWidth: 'auto'}}>
+                <div style={{...genericinnerdiv}}>
                     {
                         Object.keys(data[currentboard]).map(oneprogressfactor => (
                             <>
@@ -78,19 +79,19 @@ export default function Stats(props) {
                     }
                 </div>
             </div>
-            <div className="clickable" onClick={(e) => { console.log(e); e.target.classList[0] !== 'lucide' ? allsubects.indexOf(currentsubject) >= allsubects.length - 1 || allsubects.indexOf(currentsubject) < 0 ? setcurrentsubject(allsubects[0]) : setcurrentsubject(allsubects[allsubects.indexOf(currentsubject) + 1]) : console.log('hell') }} style={{ ...genericstatsholder, cursor: 'pointer', overflowX: 'scroll', gap: 10, display: 'grid', gridTemplateRows: '100%', color: lightclr }} >
-                <div style={{ height: '90%', width: 'fit-content', display: 'grid', justifyItems: 'center', alignItems: 'center' }}>
+            <div className="clickable" onClick={(e) => { console.log(e); e.target.classList[0] !== 'lucide' ? allsubects.indexOf(currentsubject) >= allsubects.length - 1 || allsubects.indexOf(currentsubject) < 0 ? setcurrentsubject(allsubects[0]) : setcurrentsubject(allsubects[allsubects.indexOf(currentsubject) + 1]) : console.log('hell') }} style={{ ...genericstatsholder, gridAutoFlow: ismobile ? 'row' : 'column', cursor: 'pointer', overflowX: 'scroll', gap: 10, display: 'grid', gridTemplateRows: ismobile  ? 'auto' : '100%', gridTemplateColumns: 'repeat(2, 1fr)', color: lightclr }} >
+                <div style={{ height: '90%', width: 'fit-content', display: 'grid', gridColumn: '1/-1', justifyItems: 'center', alignItems: 'center' }}>
                     {
-                        currentsubject.length > 13 ?
-                            <Marquee pauseOnHover={true} style={{ width: '10vw' }}>
+                        currentsubject.length > lengthCONSTANT ?
+                            <Marquee pauseOnHover={true} style={{ width: `${ismobile ? 70 : 10}vw`, padding: '15px 0px' }}>
                                 <strong>  <h3 className="italic">{currentsubject + "  "}</h3> </strong>
                             </Marquee> :
                             <strong>  <h3 className="italic">{currentsubject}</h3> </strong>
                     }
-                    <Progress size={120} percent={rounder(overall[currentboard][currentsubject].overall * 100)} type="dashboard" />
+                    <Progress style={{padding: '10px 0'}} size={120} percent={rounder(overall[currentboard][currentsubject].overall * 100)} type="dashboard" />
 
                 </div>
-                <div style={{...genericinnerdiv, width: 100, minWidth: 'auto'}}>
+                <div style={{...genericinnerdiv, }}>
                     <h3>Topics</h3>
                     {
                         Object.keys(alltopics).map(singletopic => (
@@ -103,7 +104,7 @@ export default function Stats(props) {
                     }
                 </div>
 
-                <div style={{...genericinnerdiv, width: 100, minWidth: 'auto'}}>
+                <div style={{...genericinnerdiv, }}>
                     <h3>Factors</h3>
                     {
                         Object.keys(progressSubject[currentboard][currentsubject]).map(singleprogress => (

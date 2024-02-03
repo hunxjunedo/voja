@@ -9,7 +9,7 @@ export default function DetailsPanel(props) {
     const [renameropen, setRenamerOpen] = useState(false)
     const [renamevalue, setRenameValue] = useState('')
     const [currentsubindex ,setCurrentSubIndex] = useState(0)
-    let { allboards, setboards, refresh, setrefresh, currentboard, progressFactors, rounder, boilerplate, setcurrentboard, currentsubject, setcurrentsubject, boards, lightclr, secondryDARK, darkclr, importantCOLOR, mainsize, boardindex } = props
+    let { allboards, setboards, refresh, ismobile, setrefresh, currentboard, progressFactors, rounder, boilerplate, setcurrentboard, currentsubject, setcurrentsubject, boards, lightclr, secondryDARK, darkclr, importantCOLOR, mainsize, boardindex } = props
 
     let inpstyles = {
         border: `3px solid ${secondryDARK}`,
@@ -23,7 +23,7 @@ export default function DetailsPanel(props) {
     }
 
     let SubjectActions = (index) => (
-        <div style={{ padding: 10, borderRadius: 20, background: darkclr }}>
+        <div style={{ padding: 10, borderRadius: 20, background: darkclr, display: 'grid', justifyItems: 'center', alignItems: 'center', gridAutoFlow : 'column' }}>
             <Plus size={16} style={{ margin: '0 5px' }} onClick={(e) => (newTopic(index, e))} />
             <Trash size={16} style={{ margin: '0 5px' }} onClick={(e) => (subjectDeleter(index, e))} />
             <Edit size={16} style={{ margin: '0 5px' }} onClick={(e) => (renamer(index, e))} />
@@ -129,7 +129,7 @@ export default function DetailsPanel(props) {
     console.log(allsubjects)
 
     //styling
-    const maindivstyles = { width: '90%', overflowY: "scroll", height: '97%', background: darkclr, borderRadius: 40, gridColumn: "-2/-1", gridRow: "1/-1", color: lightclr, fontSize: mainsize, display: 'flex', flexDirection: 'column', placeItems: 'center' }
+    const maindivstyles = { width: '90%', scrollSnapAlign: 'center', overflowY: "scroll", height: ismobile ? '90%' : '97%', background: darkclr, borderRadius: 40, gridColumn: ismobile ? '2/3' : "-2/-1", gridRow: ismobile ? '1/2' : "1/-1", color: lightclr, fontSize: mainsize, display: 'flex', flexDirection: 'column', placeItems: 'center' }
 
 
     //to plus or minus the progress
@@ -159,13 +159,13 @@ export default function DetailsPanel(props) {
             key: index, label: singlesubject.name,
             children: singlesubject.topics.map((onetopic, topicindex) =>
             (
-                <div style={{ width: '90%', background: darkclr, borderRadius: 20, minHeight: '10vh', alignItems: 'center', margin: 10, gap: 5, padding: '1vw', display: 'grid', flexWrap: 'wrap', gridAutoFlow: 'column', overflowX: 'scroll', boxShadow: 'rgba(255, 255, 255, 0.05) 2px 1px 60px 10px' }} >
+                <div style={{ width: '90%', background: darkclr, borderRadius: 20, minHeight: '10vh', alignItems: 'center', margin: 10, gap: 5, padding: '1vw', display: 'grid', flexWrap: 'wrap', gridAutoFlow: ismobile ? 'row' : 'column', overflowX: 'scroll', boxShadow: 'rgba(255, 255, 255, 0.05) 2px 1px 60px 10px' }} >
                     <div style={{ display: 'grid', gridAutoFlow: 'row', gap: 10 }}>
-                        <Input onPressEnter={(e) => { subjectChanger(index, topicindex, e.target.value,) }} style={{ maxWidth: '10vw', ...inpstyles }} defaultValue={onetopic.name} />
+                        <Input onPressEnter={(e) => { subjectChanger(index, topicindex, e.target.value,) }} style={{ maxWidth: ismobile ? 'auto' : '10vw', ...inpstyles }} defaultValue={onetopic.name} />
                         <NewFactorHandler progressFactors={progressFactors} subject={singlesubject} board={currentboard} index={index} topicindex={topicindex} setboards={setboards} boardindex={boardindex} boilerplate={boilerplate} />
                     </div>
 
-                    <div style={{ minWidth: '200px', width: '90%', maxHeight: '20vh', overflowY: 'scroll', background: secondryDARK, padding: 5, borderRadius: 20, }}>
+                    <div style={{ minWidth: '200px', width: '90%', justifySelf: 'center', maxHeight: '20vh', overflowY: 'scroll', background: secondryDARK, padding: 5, borderRadius: 20, }}>
                         {Object.entries(onetopic.progress).map((progressobj, progressindex) => (
                             <div style={{ display: 'flex', gap: 5, gridAutoFlow: 'column', alignItems: 'center' }}>
                                 <p style={{ width: 'fit-content' }}>{progressobj[0]}</p>

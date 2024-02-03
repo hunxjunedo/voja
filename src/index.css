@@ -53,8 +53,12 @@ body {
 @media only screen and (max-width: 400px) {
   #root{
     grid-template-columns: 50% 50% !important;
-
-
+    grid-template-rows: max-content !important;
+    overflow-y: scroll !important;
+    height: 100% !important;
+  }
+  body{
+    overflow: auto !important;
   }
 }
 /* Track */

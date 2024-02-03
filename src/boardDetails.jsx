@@ -6,7 +6,7 @@ import { ChevronDown, LucidePlus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 export default function BoardDetails(props) {
-    const { allboards, setcurrentsubject, currentboard, setcurrentboard, setboards, lightclr, darkclr, boards, mainsize, secondryDARK, importantCOLOR, boilerplate, boardindex, progressFactors } = props
+    const { allboards, setcurrentsubject, ismobile, currentboard, setcurrentboard, setboards, lightclr, darkclr, boards, mainsize, secondryDARK, importantCOLOR, boilerplate, boardindex, progressFactors } = props
     const [boardOpen, setBoardOpen] = useState(false)
     const [brdimage, setbrdimage] = useState(boards[boardindex].image)
     const [nameChange, setnameChange] = useState(false)
@@ -18,8 +18,8 @@ export default function BoardDetails(props) {
     ////
     const boardinfostyles = {
         background: secondryDARK,
-        width: '90%',
-        height: '10vw',
+        width: ismobile ? '90vw' : '90%',
+        height: ismobile ? 'auto' : '10vw',
         borderRadius: 20,
         color: lightclr,
         fontSize: mainsize,
@@ -80,7 +80,7 @@ export default function BoardDetails(props) {
     }, [boardToEdit])
 
     return (
-        <div style={{ height: '90%', justifySelf: 'start', padding: 5, color: lightclr, maxHeight: '48vh', display: 'grid' }}>
+        <div style={{ height: ismobile ? '40vh': '90%', gridTemplateRows: 'max-content', justifySelf: 'start', padding: 5, color: lightclr, maxHeight: '48vh', display: 'grid', gridColumn : ismobile ? '1/-1' : '1/2' }}>
             <Modal okText='save' onOk={handleOK} onCancel={() => (setBoardOpen(false))} open={boardOpen} >
                 <div style={genericBoardInfo}>
                     <Input onChange={(e) => { setboardname(e.target.value); setnameChange(true) }} className='brdNAME' value={boardname} style={{ fontWeight: 'bolder' }} size='large' />
@@ -96,7 +96,7 @@ export default function BoardDetails(props) {
                 </div>
             </Modal>
             <h1>Boards</h1>
-            <div style={{ display: 'grid', scrollSnapType: 'y mandatory', gridAutoFlow: 'row', overflowY: 'scroll', background: darkclr, width: 'fit-content', height: '100%', borderRadius: 40, justifySelf: 'start', width: '100%', justifyItems: 'center' }}>
+            <div style={{ display: 'grid', scrollSnapType: `${ismobile ? 'x' : 'y'} mandatory`, gridAutoFlow: ismobile ? 'column' : 'row', overflowY: 'scroll', background: darkclr, width: 'fit-content', height: '100%', borderRadius: 40, justifySelf: 'start', width: '100%', justifyItems: 'center' }}>
                 {
                     boards.map((oneboard, index) => (
                         <div onClick={() => { setcurrentboard(oneboard.name); setcurrentsubject(boards[index].subjects[0].name) }} className=".board-card" style={oneboard.name === currentboard ? { ...boardinfostyles, boxShadow: importantCOLOR + " 2px 1px 20px 1px", color: 'white' } : { ...boardinfostyles }}>
