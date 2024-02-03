@@ -5,6 +5,97 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+.ant-modal-mask{
+  background-color: rgb(249, 249, 249, 0.13) !important;
+  backdrop-filter: blur(2px);
+}
+
+.ant-modal{
+  width: fit-content !important;
+  top: 30vh !important
+}
+
+.ant-modal-content{
+  height: fit-content;
+  width: fit-content !important;
+  border-radius: 30px !important;
+}
+
+.ant-modal input, .ant-modal textarea {
+  border-radius: 10px;
+  margin: 5px
+}
+
+.ant-modal-body{
+  display: grid;
+  grid-auto-flow: column;
+  gap: 10px;
+}
+.ant-collapse{
+  border-radius: 16px;
+  width: 90%;
+}
+
+
+
+.clickable {
+  cursor: pointer;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+@media only screen and (max-width: 400px) {
+  #root{
+    grid-template-columns: 50% 50% !important;
+
+
+  }
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f100;
+}
+
+.italic{
+  font-style: italic;
+  margin: 0 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #58535300;
+
+  border-radius: 20px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.board-card{
+  width: '90%'
+}
+
+#root{
+  display: grid;
+  place-items: start;
+  grid-template-columns: 20% 20% 20% 40%;
+  flex-wrap: wrap;
+  overflow: hidden;
+  grid-template-rows: 50% 50%;
+  background: rgb(10, 10, 10);
+  grid-gap: 2px;
+  justify-items: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh
 }
 
 code {
