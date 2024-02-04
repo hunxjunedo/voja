@@ -161,7 +161,7 @@ export default function DetailsPanel(props) {
             (
                 <div style={{ width: '90%', background: darkclr, borderRadius: 20, minHeight: '10vh', alignItems: 'center', margin: 10, gap: 5, padding: '1vw', display: 'grid', flexWrap: 'wrap', gridAutoFlow: ismobile ? 'row' : 'column', overflowX: 'scroll', boxShadow: 'rgba(255, 255, 255, 0.05) 2px 1px 60px 10px' }} >
                     <div style={{ display: 'grid', gridAutoFlow: 'row', gap: 10 }}>
-                        <Input onPressEnter={(e) => { subjectChanger(index, topicindex, e.target.value,) }} style={{ maxWidth: ismobile ? 'auto' : '10vw', ...inpstyles }} defaultValue={onetopic.name} />
+                        <Input onSubmit={(e) => {subjectChanger(index, topicindex, e.target.value,)}} onPressEnter={(e) => { subjectChanger(index, topicindex, e.target.value,) }} style={{ maxWidth: ismobile ? 'auto' : '10vw', ...inpstyles }} defaultValue={onetopic.name} />
                         <NewFactorHandler progressFactors={progressFactors} subject={singlesubject} board={currentboard} index={index} topicindex={topicindex} setboards={setboards} boardindex={boardindex} boilerplate={boilerplate} />
                     </div>
 
@@ -193,7 +193,7 @@ export default function DetailsPanel(props) {
              <h1>Subjects</h1>
                 <Plus onClick={newsubcreater} style={{cursor: 'pointer'}} />
              </div>
-                <Collapse bordered={false} items={items} />
+                <Collapse accordion={true} bordered={false} items={items} />
             </div>
         </>
     )

@@ -17,7 +17,7 @@ export default function Notes(props) {
     let dataexists = localStorage.getItem(tasksneeded) !== null;
     let data =  dataexists ? JSON.parse(localStorage.getItem(tasksneeded) ): ['']
     const checkstyle = {
-        margin: '10px',
+        margin: '0px 5px',
         cursor: 'pointer'
     }
 
@@ -35,7 +35,7 @@ export default function Notes(props) {
     }
     const taskstyles = {
         width: '95%',
-        height : '90%',
+        height : '50px',
         borderRadius: '15px',
         background: secondryDARK,
         minHeight: '7vh',
@@ -71,7 +71,7 @@ export default function Notes(props) {
         })
 
                 //now change the localstoarge
-                localStorage.setItem('notes', JSON.stringify(data))
+                localStorage.setItem(tasksneeded, JSON.stringify(data))
                 //now toastify
                 toast.success('deleted ✔️', {
                     position: "top-center",
@@ -159,7 +159,7 @@ export default function Notes(props) {
                                {
 
                                tasksneeded === 'notes' ? <Collapse bordered={false} items={formatedData} /> : data.map((onetask, index) => (
-                                <div className="bold" color={accentclr} style={taskstyles} >{onetask.done ? <strike>{onetask.text}</strike> : <>{onetask.text} <CheckCircle onClick={()=>(markasdone(index))} style={checkstyle} size={14} /></> }</div>
+                                <div className="bold" color={accentclr} style={taskstyles} >{onetask.done ? <strike>{onetask.text}</strike> : <>{onetask.text} <CheckCircle onClick={()=>(markasdone(index))} style={checkstyle} size={14} /></> }<LucideDelete onClick={()=>(deletehandler(index))} style={checkstyle} size={14}  /></div>
                                ))
                                }
                         </>
