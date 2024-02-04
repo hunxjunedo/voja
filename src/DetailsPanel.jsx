@@ -1,9 +1,10 @@
-import { Collapse, Progress, Input, Popover, AutoComplete, Modal } from "antd";
-import { ChevronDown, DeleteIcon, Edit, MinusCircle, Plus, PlusCircle, Trash } from "lucide-react";
+import { Collapse, Progress, Input, Popover, AutoComplete,  Modal, Button } from "antd";
+import { CheckIcon, ChevronDown, DeleteIcon, Edit, MinusCircle, Plus, PlusCircle, Trash } from "lucide-react";
 import Marquee from "react-fast-marquee";
 import FactorActions from "./factoractions";
 import NewFactorHandler from "./newfactorhandler";
 import { useState } from "react";
+import Search from "antd/es/input/Search";
 
 export default function DetailsPanel(props) {
     const [renameropen, setRenamerOpen] = useState(false)
@@ -161,7 +162,7 @@ export default function DetailsPanel(props) {
             (
                 <div style={{ width: '90%', background: darkclr, borderRadius: 20, minHeight: '10vh', alignItems: 'center', margin: 10, gap: 5, padding: '1vw', display: 'grid', flexWrap: 'wrap', gridAutoFlow: ismobile ? 'row' : 'column', overflowX: 'scroll', boxShadow: 'rgba(255, 255, 255, 0.05) 2px 1px 60px 10px' }} >
                     <div style={{ display: 'grid', gridAutoFlow: 'row', gap: 10 }}>
-                        <Input onSubmit={(e) => {subjectChanger(index, topicindex, e.target.value,)}} onPressEnter={(e) => { subjectChanger(index, topicindex, e.target.value,) }} style={{ maxWidth: ismobile ? 'auto' : '10vw', ...inpstyles }} defaultValue={onetopic.name} />
+                        <Search onSubmit={(e) => {subjectChanger(index, topicindex, e.target.value,)}} onSearch={(value) => {subjectChanger(index, topicindex, value,)}}  onPressEnter={(e) => { subjectChanger(index, topicindex, e.target.value,) }} style={{ maxWidth: ismobile ? 'auto' : '10vw', ...inpstyles }} defaultValue={onetopic.name} />
                         <NewFactorHandler progressFactors={progressFactors} subject={singlesubject} board={currentboard} index={index} topicindex={topicindex} setboards={setboards} boardindex={boardindex} boilerplate={boilerplate} />
                     </div>
 
