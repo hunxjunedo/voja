@@ -4,6 +4,7 @@ import { ConfigProvider } from 'antd';
 import BoardDetails from './boardDetails';
 import Notes from './notes';
 import DetailsPanel from './DetailsPanel';
+import IntroHandler from './introhandler';
 
 function App() {
   //STATE INITIALIAZATIN
@@ -13,7 +14,7 @@ function App() {
   const secondryDARK = 'rgb(20, 20, 20)'
   const mainsize = 14
   const importantCOLOR = '#1677ff'
-  const ismobile = window.innerWidth <= 500
+  const ismobile = window.innerWidth <= 600
 
   let boilerplate = [
     {
@@ -204,6 +205,9 @@ function App() {
   const rounder = (index) => {
     return Math.round(index * 10) / 10;
   }
+  const newtoapp = () => {
+    return localStorage.getItem('boards2') === null
+  }
 
   // useEffect(()=> {
   //   let allsubects = Object.keys(overallProgress[currentboard])
@@ -257,7 +261,7 @@ function App() {
           borderRadius: 10,
           colorBorder: secondryDARK
         }
-        
+
 
       },
       token: {
@@ -270,19 +274,25 @@ function App() {
         colorTextDescription: lightclr
       }
     }}>
-     {
-      ismobile ? (
-        <div style={{display: 'grid', gridAutoFlow: 'column', scrollSnapType: 'x mandatory', alignItems: 'center', width: '100vw', height: '100%', gridColumn: '1/3', gridRow: '1/2', gridTemplateRows: '100%', gridTemplateColumns: '100vw 100vw', overflowX: 'scroll'}}>
-           <Stats data={progressFactors} ismobile={ismobile} refresh={refresh} allsubects={allsubects} rounder={rounder} currentsubject={currentsubject} setcurrentsubject={setcurrentsubject} mainsize={mainsize} secondryDARK={secondryDARK} currentboard={currentboard} darkclr={darkclr} lightclr={lightclr} overall={overallProgress} progressSubject={progressPercentage} />
-      <DetailsPanel {...{ allboards, ismobile, refresh, setrefresh, setboards, boilerplate, progressFactors, rounder, currentboard, setcurrentboard, currentsubject, setcurrentsubject, boards, lightclr, secondryDARK, darkclr, importantCOLOR, mainsize, boardindex }} />
-        </div>) : (
+
+      {
+        ismobile ? (
+          <div style={{ display: 'grid', gridAutoFlow: 'column', scrollSnapType: 'x mandatory', alignItems: 'center', width: '100vw', height: '100%', gridColumn: '1/3', gridRow: '1/2', gridTemplateRows: '100%', gridTemplateColumns: '100vw 100vw', overflowX: 'scroll' }}>
+            <Stats data={progressFactors} ismobile={ismobile} refresh={refresh} allsubects={allsubects} rounder={rounder} currentsubject={currentsubject} setcurrentsubject={setcurrentsubject} mainsize={mainsize} secondryDARK={secondryDARK} currentboard={currentboard} darkclr={darkclr} lightclr={lightclr} overall={overallProgress} progressSubject={progressPercentage} />
+            <DetailsPanel {...{ allboards, ismobile, refresh, setrefresh, setboards, boilerplate, progressFactors, rounder, currentboard, setcurrentboard, currentsubject, setcurrentsubject, boards, lightclr, secondryDARK, darkclr, importantCOLOR, mainsize, boardindex }} />
+          </div>) : (
           <>
-           <Stats data={progressFactors} ismobile={ismobile} refresh={refresh} allsubects={allsubects} rounder={rounder} currentsubject={currentsubject} setcurrentsubject={setcurrentsubject} mainsize={mainsize} secondryDARK={secondryDARK} currentboard={currentboard} darkclr={darkclr} lightclr={lightclr} overall={overallProgress} progressSubject={progressPercentage} />
-           <DetailsPanel {...{ allboards, ismobile, refresh, setrefresh, setboards, boilerplate, progressFactors, rounder, currentboard, setcurrentboard, currentsubject, setcurrentsubject, boards, lightclr, secondryDARK, darkclr, importantCOLOR, mainsize, boardindex }} />
+            <Stats data={progressFactors} ismobile={ismobile} refresh={refresh} allsubects={allsubects} rounder={rounder} currentsubject={currentsubject} setcurrentsubject={setcurrentsubject} mainsize={mainsize} secondryDARK={secondryDARK} currentboard={currentboard} darkclr={darkclr} lightclr={lightclr} overall={overallProgress} progressSubject={progressPercentage} />
+            <DetailsPanel {...{ allboards, ismobile, refresh, setrefresh, setboards, boilerplate, progressFactors, rounder, currentboard, setcurrentboard, currentsubject, setcurrentsubject, boards, lightclr, secondryDARK, darkclr, importantCOLOR, mainsize, boardindex }} />
           </>
         )
-      
-     }
+
+      }
+      {newtoapp() ? 
+    //  <IntroHandler {...ismobile } />
+    ''
+     : ''
+}
       <BoardDetails {...{ allboards, ismobile, setboards, progressFactors, boardindex, currentboard, boilerplate, setcurrentboard, currentsubject, setcurrentsubject, boards, lightclr, secondryDARK, darkclr, importantCOLOR, mainsize }} />
       <Notes notestype='notes' accentclr={lightclr} darkclr={darkclr} secondryDARK={secondryDARK} mainsize={mainsize} />
       <Notes notestype='tasks' accentclr={lightclr} darkclr={darkclr} secondryDARK={secondryDARK} mainsize={mainsize} />

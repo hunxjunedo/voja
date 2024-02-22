@@ -5,7 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
+  overflow: hidden scroll;
 }
 
 .ant-modal-mask{
@@ -45,18 +45,30 @@ body {
   cursor: pointer;
 }
 
+/* radial-gradient(206.99% 200.54%  at 50% 50%, rgba(27, 115, 237, 0.3) 1%,rgb(144 227 68 / 7%) 1%, rgba(194, 46, 255, 0.06) 25.67%) */
+
+.filler{
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  font-weight: bolder !important;
+}
+
+
 /* width */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
 }
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 600px) {
   #root{
     grid-template-columns: 50% 50% !important;
     grid-template-rows: max-content !important;
     overflow-y: scroll !important;
     height: 100% !important;
   }
+
+  
   body{
     overflow: auto !important;
   }
