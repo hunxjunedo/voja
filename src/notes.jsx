@@ -89,7 +89,7 @@ export default function Notes(props) {
     //formation
     if(dataexists && tasksneeded === 'notes'){
         data.forEach((onenote, index)=>{
-         formatedData[index] = {key: ''+index, label: onenote.title, children: <Input suffix={<Trash size={14} style={{cursor: 'pointer'}} onClick={()=>(deletehandler(index))} />} onPressEnter={(e)=>(edithandler(index, e.target.value))} defaultValue={onenote.text} />}
+         formatedData[index] = {key: ''+index, label: onenote.title, children: <TextArea suffix={<Trash size={14} style={{cursor: 'pointer'}} onClick={()=>(deletehandler(index))} />} onPressEnter={(e)=>(edithandler(index, e.target.value))} defaultValue={onenote.text} />}
         })
     }
     const handleNewNote = () => {
