@@ -5,6 +5,7 @@ import BoardDetails from './boardDetails';
 import Notes from './notes';
 import DetailsPanel from './DetailsPanel';
 import IntroHandler from './introhandler';
+import ForTest from './fortest';
 
 function App() {
   //STATE INITIALIAZATIN
@@ -296,6 +297,7 @@ function App() {
       <BoardDetails {...{ allboards, ismobile, setboards, progressFactors, boardindex, currentboard, boilerplate, setcurrentboard, currentsubject, setcurrentsubject, boards, lightclr, secondryDARK, darkclr, importantCOLOR, mainsize }} />
       <Notes notestype='notes' accentclr={lightclr} darkclr={darkclr} secondryDARK={secondryDARK} mainsize={mainsize} />
       <Notes notestype='tasks' accentclr={lightclr} darkclr={darkclr} secondryDARK={secondryDARK} mainsize={mainsize} />
+      <ForTest />
     </ConfigProvider>);
 }
 
