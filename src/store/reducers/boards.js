@@ -21,7 +21,11 @@ const extraReducers = (builder) => {
         })
 }
 
-const reducers = {};
+const reducers = {
+    changeCurrentBoard: (state, {payload: newIndex})  => {
+        state.currentBoard = newIndex
+    }
+};
 
 
 const asyncThunks = {

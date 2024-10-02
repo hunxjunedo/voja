@@ -1,15 +1,20 @@
-import { Collapse, Progress, Input, Popover, AutoComplete,  Modal, Button } from "antd";
+import { Collapse, Progress, Input, Popover, AutoComplete, Modal, Button } from "antd";
 import { CheckIcon, ChevronDown, DeleteIcon, Edit, MinusCircle, Plus, PlusCircle, Trash } from "lucide-react";
 import Marquee from "react-fast-marquee";
 import FactorActions from "./factoractions";
 import NewFactorHandler from "./newfactorhandler";
 import { useState } from "react";
 import Search from "antd/es/input/Search";
+import useFactors from "./hooks/useFactors";
+import { useSelector } from "react-redux";
+import useBoards from "./hooks/useBoards";
 
 export default function DetailsPanel(props) {
     const [renameropen, setRenamerOpen] = useState(false)
     const [renamevalue, setRenameValue] = useState('')
-    const [currentsubindex ,setCurrentSubIndex] = useState(0)
+    const [currentsubindex, setCurrentSubIndex] = useState(0);
+    const { currentBoard } = useBoards(useSelector)
+    const { heirarchy } = useFactors(useSelector, currentBoard)
     let { allboards, setboards, refresh, ismobile, setrefresh, currentboard, progressFactors, rounder, boilerplate, setcurrentboard, currentsubject, setcurrentsubject, boards, lightclr, secondryDARK, darkclr, importantCOLOR, mainsize, boardindex } = props
 
     let inpstyles = {
@@ -24,7 +29,7 @@ export default function DetailsPanel(props) {
     }
 
     let SubjectActions = (index) => (
-        <div style={{ padding: 10, borderRadius: 20, background: darkclr, display: 'grid', justifyItems: 'center', alignItems: 'center', gridAutoFlow : 'column' }}>
+        <div style={{ padding: 10, borderRadius: 20, background: darkclr, display: 'grid', justifyItems: 'center', alignItems: 'center', gridAutoFlow: 'column' }}>
             <Plus size={16} style={{ margin: '0 5px' }} onClick={(e) => (newTopic(index, e))} />
             <Trash size={16} style={{ margin: '0 5px' }} onClick={(e) => (subjectDeleter(index, e))} />
             <Edit size={16} style={{ margin: '0 5px' }} onClick={(e) => (renamer(index, e))} />
@@ -62,13 +67,13 @@ export default function DetailsPanel(props) {
         console.log(alltopics)
 
         let incrementer = 1
-        let subname = (incrementer) =>  ('New Topic ' + incrementer)
+        let subname = (incrementer) => ('New Topic ' + incrementer)
 
         while (alltopics.map(sub => sub.name).includes(subname(incrementer))) {
             incrementer++
         }
 
-        alltopics.push({name: subname(incrementer), progress: {sample: 0}})
+        alltopics.push({ name: subname(incrementer), progress: { sample: 0 } })
         setboards(tempboarddata)
         localStorage.setItem('boards', JSON.stringify(tempboarddata))
         setrefresh(!refresh)
@@ -86,13 +91,13 @@ export default function DetailsPanel(props) {
         let tempboarddata = localStorage.getItem('boards') !== null ? JSON.parse(localStorage.getItem('boards')) : boilerplate
         let allsubs = tempboarddata[boardindex].subjects
         let incrementer = 1
-        let subname = (incrementer) =>  ('New Subject ' + incrementer)
+        let subname = (incrementer) => ('New Subject ' + incrementer)
 
         while (allsubs.map(sub => sub.name).includes(subname(incrementer))) {
             incrementer++
         }
 
-        allsubs.push({name: subname(incrementer), topics: [{name: 'sample topics', progress: {sample: 0}}]})
+        allsubs.push({ name: subname(incrementer), topics: [{ name: 'sample topics', progress: { sample: 0 } }] })
         setboards(tempboarddata)
         localStorage.setItem('boards', JSON.stringify(tempboarddata))
         setrefresh(!refresh)
@@ -103,7 +108,7 @@ export default function DetailsPanel(props) {
         //now traverse thru all subs and see if not match
         let tempboard = boards
         let tempdata = boards[boardindex].subjects
-        if(!tempdata.map(sub => sub.name).includes(renamevalue)){
+        if (!tempdata.map(sub => sub.name).includes(renamevalue)) {
             //proceed!
             tempdata[currentsubindex].name = renamevalue
             setboards(boards)
@@ -155,47 +160,100 @@ export default function DetailsPanel(props) {
     }
 
     //prepare items for the collapse
-    let items = allsubjects.map((singlesubject, index) => {
-        return {
-            key: index, label: singlesubject.name,
-            children: singlesubject.topics.map((onetopic, topicindex) =>
-            (
-                <div style={{ width: '90%', background: darkclr, borderRadius: 20, minHeight: '10vh', alignItems: 'center', margin: 10, gap: 5, padding: '1vw', display: 'grid', flexWrap: 'wrap', gridAutoFlow: ismobile ? 'row' : 'column', overflowX: 'scroll', boxShadow: 'rgba(255, 255, 255, 0.05) 2px 1px 60px 10px' }} >
-                    <div style={{ display: 'grid', gridAutoFlow: 'row', gap: 10 }}>
-                        <Search onSubmit={(e) => {subjectChanger(index, topicindex, e.target.value,)}}  onSearch={(value) => {subjectChanger(index, topicindex, value,)}}  onPressEnter={(e) => { subjectChanger(index, topicindex, e.target.value,) }} style={{ maxWidth: ismobile ? 'auto' : '10vw', ...inpstyles }} defaultValue={onetopic.name} />
-                        <NewFactorHandler progressFactors={progressFactors} subject={singlesubject} board={currentboard} index={index} topicindex={topicindex} setboards={setboards} boardindex={boardindex} boilerplate={boilerplate} />
-                    </div>
 
-                    <div style={{ minWidth: '200px', width: '90%', justifySelf: 'center', maxHeight: '20vh', overflowY: 'scroll', background: secondryDARK, padding: 5, borderRadius: 20, }}>
-                        {Object.entries(onetopic.progress).map((progressobj, progressindex) => (
-                            <div style={{ display: 'flex', gap: 5, gridAutoFlow: 'column', alignItems: 'center' }}>
-                                <p style={{ width: 'fit-content' }}>{progressobj[0]}</p>
-                                <Progress percent={rounder(progressobj[1] * 100)} />
-                                <PlusCircle onClick={() => (progressarthmetic(index, topicindex, progressobj[0], "plus"))} className='clickable' size={18} />
-                                <MinusCircle onClick={() => (progressarthmetic(index, topicindex, progressobj[0], "minus"))} className='clickable' size={18} />
-                                <Popover trigger='click' boards={boards} content={<FactorActions board={currentboard} subject={singlesubject} boardindex={boardindex} index={index} setboards={setboards} topicindex={topicindex} boilerplate={boilerplate} factor={progressobj[0]} />}>
-                                    <ChevronDown className="clickable" size={18} />
-                                </Popover>
-                            </div>))}
-                    </div>
-                </div>)),
-            extra: SubjectActions(index)
-        }
-    })
+
+    const itemsParser = () => {
+        return allsubjects.map((singlesubject, index) => {
+            return {
+                key: index, label: singlesubject.name,
+                children: singlesubject.topics.map((onetopic, topicindex) =>
+                (
+                    <div style={{ width: '90%', background: darkclr, borderRadius: 20, minHeight: '10vh', alignItems: 'center', margin: 10, gap: 5, padding: '1vw', display: 'grid', flexWrap: 'wrap', gridAutoFlow: ismobile ? 'row' : 'column', overflowX: 'scroll', boxShadow: 'rgba(255, 255, 255, 0.05) 2px 1px 60px 10px' }} >
+                        <div style={{ display: 'grid', gridAutoFlow: 'row', gap: 10 }}>
+                            <Search onSubmit={(e) => { subjectChanger(index, topicindex, e.target.value,) }} onSearch={(value) => { subjectChanger(index, topicindex, value,) }} onPressEnter={(e) => { subjectChanger(index, topicindex, e.target.value,) }} style={{ maxWidth: ismobile ? 'auto' : '10vw', ...inpstyles }} defaultValue={onetopic.name} />
+                            <NewFactorHandler progressFactors={progressFactors} subject={singlesubject} board={currentboard} index={index} topicindex={topicindex} setboards={setboards} boardindex={boardindex} boilerplate={boilerplate} />
+                        </div>
+
+                        <div style={{ minWidth: '200px', width: '90%', justifySelf: 'center', maxHeight: '20vh', overflowY: 'scroll', background: secondryDARK, padding: 5, borderRadius: 20, }}>
+                            {Object.entries(onetopic.progress).map((progressobj, progressindex) => (
+                                <div style={{ display: 'flex', gap: 5, gridAutoFlow: 'column', alignItems: 'center' }}>
+                                    <p style={{ width: 'fit-content' }}>{progressobj[0]}</p>
+                                    <Progress percent={rounder(progressobj[1] * 100)} />
+                                    <PlusCircle onClick={() => (progressarthmetic(index, topicindex, progressobj[0], "plus"))} className='clickable' size={18} />
+                                    <MinusCircle onClick={() => (progressarthmetic(index, topicindex, progressobj[0], "minus"))} className='clickable' size={18} />
+                                    <Popover trigger='click' boards={boards} content={<FactorActions board={currentboard} subject={singlesubject} boardindex={boardindex} index={index} setboards={setboards} topicindex={topicindex} boilerplate={boilerplate} factor={progressobj[0]} />}>
+                                        <ChevronDown className="clickable" size={18} />
+                                    </Popover>
+                                </div>))}
+                        </div>
+                    </div>)),
+                extra: SubjectActions(index)
+            }
+        })
+
+    }
+
+
 
     //now return 
     return (
         <>
-            <Modal title='Rename Subject' onCancel={()=>{setRenamerOpen(false)}} open={renameropen} onOk={renameRequest} >
-            <Input onPressEnter={renameRequest} value={renamevalue} onChange={(e)=>(setRenameValue(e.target.value))} />
+            <Modal title='Rename Subject' onCancel={() => { setRenamerOpen(false) }} open={renameropen} onOk={renameRequest} >
+                <Input onPressEnter={renameRequest} value={renamevalue} onChange={(e) => (setRenameValue(e.target.value))} />
             </Modal>
             <div style={maindivstyles}>
-             <div style={{display: 'grid', gridAutoFlow: 'column', alignItems: 'center', gap: 10}}>
-             <h1>Subjects</h1>
-                <Plus onClick={newsubcreater} style={{cursor: 'pointer'}} />
-             </div>
-                <Collapse accordion={true} bordered={false} items={items} />
+                <div style={{ display: 'grid', gridAutoFlow: 'column', alignItems: 'center', gap: 10 }}>
+                    <h1>Subjects</h1>
+                    <Plus onClick={newsubcreater} style={{ cursor: 'pointer' }} />
+                </div>
+                <Collapse accordion={true} bordered={false} items={itemsPrepare(heirarchy)} />
             </div>
         </>
     )
 }
+
+const itemsPrepare = (heirarchy) => {
+    return heirarchy.map((singlesubject, index) => ({
+        key: index,
+        label: singlesubject.name,
+        children: TopicList(singlesubject.topics)
+    }))
+}
+
+const TopicList = (topics) => (
+    <div style={{ width: '90%', borderRadius: 20, minHeight: '10vh', alignItems: 'center', margin: 10, gap: 5, padding: '1vw', display: 'grid', flexWrap: 'wrap', gridAutoFlow:  'column', overflowX: 'scroll', boxShadow: 'rgba(255, 255, 255, 0.05) 2px 1px 60px 10px' }} >
+        {
+            topics.map(topic => (
+                <TopicItem {...topic}>
+                       <div style={{ minWidth: '200px', width: '90%', justifySelf: 'center', maxHeight: '20vh', overflowY: 'scroll', padding: 5, borderRadius: 20, }}>
+
+                        {
+                            topic.factors.map(factor => (
+                                <FactorItem {...factor} />
+                            ))
+                        }
+                    </div>
+                </TopicItem>
+            ))
+        }
+    </div>
+
+)
+
+const TopicItem = ({ children, name }) => (
+    <div>
+        <h1>{name}</h1>
+        <div>
+            {children}
+        </div>
+    </div>
+)
+
+const FactorItem = ({ name, progress }) => (
+    <div style={{ display: 'flex', gap: 5, gridAutoFlow: 'column', alignItems: 'center' }}>
+    <p style={{ width: 'fit-content' }}>{name}</p>
+    <Progress percent={progress} />
+    <PlusCircle className='clickable' size={18} />
+    <MinusCircle  className='clickable' size={18} />
+</div>
+)

@@ -1,3 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+  --color-light: yellow
+}
+
+.bg-gradient{
+  background: linear-gradient(blue, yellow);
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -99,7 +111,7 @@ body {
   width: '90%'
 }
 
-#root{
+/* #root{
   display: grid;
   place-items: start;
   grid-template-columns: 20% 20% 20% 40%;
@@ -112,7 +124,7 @@ body {
   align-items: center;
   width: 100vw;
   height: 100vh
-}
+} */
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
