@@ -5,6 +5,7 @@ import BoardDetails from './boardDetails';
 import Notes from './notes';
 import DetailsPanel from './DetailsPanel';
 import IntroHandler from './introhandler';
+import Credit from './credit';
 
 function App() {
   //STATE INITIALIAZATIN
@@ -274,7 +275,7 @@ function App() {
         colorTextDescription: lightclr
       }
     }}>
-
+      <Credit />
       {
         ismobile ? (
           <div style={{ display: 'grid', gridAutoFlow: 'column', scrollSnapType: 'x mandatory', alignItems: 'center', width: '100vw', height: '100%', gridColumn: '1/3', gridRow: '1/2', gridTemplateRows: '100%', gridTemplateColumns: '100vw 100vw', overflowX: 'scroll' }}>
